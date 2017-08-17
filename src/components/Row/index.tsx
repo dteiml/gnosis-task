@@ -14,7 +14,8 @@ interface P {
 const Row = ({ contact, deleteContact }: P) => {
 	const { id, fields } = contact;
 	let { DOB } = fields;
-	DOB && (DOB = DOB.split('-').join('/'));
+	// format date correctly:
+	DOB && (DOB = DOB.split('-').join('/')); 
 
 	return (
 		<MyRow>
@@ -26,7 +27,7 @@ const Row = ({ contact, deleteContact }: P) => {
 			<td>
 				<Link to={'/edit/' + id}>Edit</Link>
 				{' '}
-				<Span onClick={() => {deleteContact(id)}}> Delete </Span>	
+				<Span onClick={() => {deleteContact(id)}}>Delete</Span>	
 			</td>
 		</MyRow>
 	);

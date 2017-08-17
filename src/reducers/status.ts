@@ -6,8 +6,6 @@ const status = (state: string = 'initial', action: any) => {
 			return action.newStatus;
 
 		default:
-			return state;
-	}
-};
+			return state;}};
 
 export default status;

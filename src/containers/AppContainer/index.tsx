@@ -8,10 +8,12 @@ import App from '../../components/App';
 import Contact from '../../constants/Contact';
 
 export interface P {
-	data: Contact[];
+	contacts: Contact[];
 	status: string;
 	fetchData: () => void;
 	deleteContact: (id: string) => void;
+	sort: (field: string) => void;
+	sortBy: string;
 };
 
 class AppContainer extends Component<P, null> {
@@ -36,15 +38,17 @@ class AppContainer extends Component<P, null> {
 
 const mapStateToProps = (state: any) => {
 	return {
-		data: state.data,
-		status: state.status
+		contacts: state.data.contacts,
+		status: state.status,
+		sortBy: state.data.sortBy
 	};
 };
 
 const mapDispatchToProps = (dispatch: any) => {
 	return {
 		fetchData: () => dispatch(ai.fetchData()),
-		deleteContact: (id: string) => dispatch(ai.deleteContact(id))
+		deleteContact: (id: string) => dispatch(ai.deleteContact(id)),
+		sort: (field: string) => dispatch(ai.sort(field))
 	};
 };
 

@@ -3,10 +3,10 @@ export default class Contact {
 	fields: Fields;
 };
 
-class Fields {
+export class Fields {
 	firstName?: string;
 	lastName?: string;
 	DOB?: string;
-	phone?: number;
+	phone?: string;
 	email?: string;
 };

@@ -12,13 +12,15 @@ import FormContainer from '../../containers/FormContainer';
 import Contact from '../../constants/Contact';
 
 interface P {
-	data: Contact[];
+	contacts: Contact[];
 	deleteContact: (id: string) => void;
+	sort: (field: string) => void;
+	sortBy: string;
 };
 
 class App extends Component<P, any> {
 	render() {
-		const { data, deleteContact } = this.props;
+		const { contacts, deleteContact, sort, sortBy } = this.props;
 		return (
 			<Center>
 				<Router>
@@ -29,8 +31,10 @@ class App extends Component<P, any> {
 									<Title text='Gnosis Frontend - React/Redux Task'/>
 									<ControlPanel/>
 									<Table 
-										data={data}
-										deleteContact={deleteContact}/>
+										contacts={contacts}
+										deleteContact={deleteContact}
+										sort={sort}
+										sortBy={sortBy}/>
 								</Div>
 							)
 						}}/>   

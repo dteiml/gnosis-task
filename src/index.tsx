@@ -13,6 +13,6 @@ render(
 	<Provider store={store}>
 		<AppContainer />
 	</Provider>,
-	document.getElementById('root') as HTMLElement
-);
+	document.getElementById('root') as HTMLElement);
+
 registerServiceWorker();

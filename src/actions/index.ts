@@ -1,12 +1,17 @@
 // types package doesn't exist, so we have to use old notation:
 const uuid = require('uuid-v4');
 
-import Contact from '../constants/Contact';
+import Contact, { Fields } from '../constants/Contact';
 
 const changeStatus = (newStatus: string) => ({
 	type: 'CHANGE_STATUS',
 	newStatus
 });
+
+export const sort = (field: string) => ({
+	type: 'SORT',
+	field
+})
 
 export const fetchData = () => {
 	return (dispatch: any) => {
@@ -29,7 +34,7 @@ const hydrate = () => {
 const noData = () => ({type: 'FETCH_DATA'});
 
 // submitContact distinguishes whether to update contact or create  new one
-export const submitContact = (id: string, fields: object) => {
+export const submitContact = (id: string, fields: Fields) => {
 	return (dispatch: any) => {
 	id 
 		? dispatch(updateContact(id, fields))
@@ -37,7 +42,7 @@ export const submitContact = (id: string, fields: object) => {
 	}
 }
 
-const createContact = (fields: object) => {
+const createContact = (fields: Fields) => {
 	const id = uuid();
 	hibernate(id, fields);
 	return {
@@ -47,7 +52,7 @@ const createContact = (fields: object) => {
 	};
 };
 
-const updateContact = (id: string, fields: object) => {
+const updateContact = (id: string, fields: Fields) => {
 	hibernate(id, fields);
 	return {
 		type: 'UPDATE_CONTACT',

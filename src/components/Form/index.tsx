@@ -18,9 +18,12 @@ interface S extends Contact {
 }
 
 class Form extends Component<P, S> {
-	state = {...this.props.contact, type: 'text'};
+	state = {id: this.props.contact.id,
+					 fields: this.props.contact.fields, 
+					 type: 'text'};
 
 	handleChange = (evt: any) => {
+		console.log('Form handleChange');
 		const { name, value } = evt.target;
 		this.setState((prevState) => { 
 			prevState.fields[name] = value; // this is not a reducer, so immutability is not a propblem
@@ -29,10 +32,9 @@ class Form extends Component<P, S> {
 	}
 
 	handleSubmit = (evt: any) => {
-		console.log('handlesubmit');
+		evt.preventDefault();
 		const { id, fields } = this.state;
 		this.props.submitContact(id, fields);
-
 	}
 
 	dateFocus = () => {
@@ -62,11 +64,13 @@ class Form extends Component<P, S> {
 				<Input {...atts} name='phone' type='text' placeholder='Phonenumber' value={phone} />
 				<Input {...atts} name='email' type='text' placeholder='E-Mail' value={email}/>
 
-				<Link to='/' onClick={this.handleSubmit} >
-					<Button 
-						text={loc ? 'Save' : 'Create'} 
-						width={130}/> 
-				</Link>
+				<span onClick={this.handleSubmit}>
+					<Link to='/' >
+						<Button 
+							text={loc ? 'Save' : 'Create'} 
+							width={130}/>
+					</Link>
+				</span>
 
 			</MyForm>
 		);

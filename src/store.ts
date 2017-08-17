@@ -9,7 +9,6 @@ const logger = (store: any) => (next: any) => (action: any) => {
 	console.log('next state', store.getState());
 	console.groupEnd();
 
-	return result;
-};
+	return result;};
 
 export const createAppStore = () => createStore(rootReducer, applyMiddleware(thunk.default, logger));

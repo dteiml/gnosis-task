@@ -36,20 +36,18 @@ const createContact = (contacts: Contact[], id: string, fields: Fields) => {
 
 // data is composed of an array of contacts and a sortBy tag
 const data = (state: S = {contacts: [], sortBy: ''}, action: any) => {
-	const { contacts } = state;
-
+	const newContacts: Contact[] = [...state.contacts];
 
 	// following switch case deals with fetching and sorting
 	switch ( action.type ) {
 
 		case at.FETCH_DATA: // fetch data
-			return { contacts: action.data || contacts };
+			return { contacts: action.data || state.contacts };
 
 		case at.SORT: // sort
 			// declare variables
 			const { sortBy } = state,
-						{ field } = action,
-						newContacts = [...contacts]; // so we don't mutate state
+						{ field } = action;
 
 			return sort(newContacts, sortBy, field);
 	}
@@ -57,7 +55,6 @@ const data = (state: S = {contacts: [], sortBy: ''}, action: any) => {
 	// the next switch case deals with mutating contacts 
 	// (I have split it up into two switch cases to declare variables below)
 	const { id, fields } = action;
-	let newContacts: Contact[] = [];
 	switch ( action.type ) {
 
 		case at.DELETE_CONTACT:

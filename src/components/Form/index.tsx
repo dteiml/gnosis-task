@@ -23,7 +23,6 @@ class Form extends Component<P, S> {
 					 type: 'text'};
 
 	handleChange = (evt: any) => {
-		console.log('Form handleChange');
 		const { name, value } = evt.target;
 		this.setState((prevState) => { 
 			prevState.fields[name] = value; // this is not a reducer, so immutability is not a propblem

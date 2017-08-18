@@ -20,17 +20,17 @@ const sort = (contacts: Contact[], sortBy: string, field: string) => {
 }
 
 const deleteContact = (contacts: Contact[], id: string) => {
-	return contacts = contacts.filter((contact: Contact) => // pure function
-											contact.id !== id);
+	return { contacts: contacts.filter((contact: Contact) => // pure function
+											contact.id !== id)};
 }
 
 const updateContact = (contacts: Contact[], id: string, fields: Fields) => {
-	return contacts.map((contact: Contact) => 
-											contact.id === id ? {id, fields} : contact); // pure function
+	return { contacts: contacts.map((contact: Contact) => 
+										contact.id === id ? { id, fields } : contact)}; // pure function
 }
 
 const createContact = (contacts: Contact[], id: string, fields: Fields) => {
-	return { contacts: contacts.concat([ {id, fields} ])}; // pure function
+	return { contacts: contacts.concat([ { id, fields } ])}; // pure function
 }
 
 
@@ -40,7 +40,6 @@ const data = (state: S = {contacts: [], sortBy: ''}, action: any) => {
 
 	// following switch case deals with fetching and sorting
 	switch ( action.type ) {
-
 		case at.FETCH_DATA: // fetch data
 			return { contacts: action.data || state.contacts };
 
@@ -55,8 +54,8 @@ const data = (state: S = {contacts: [], sortBy: ''}, action: any) => {
 	// the next switch case deals with mutating contacts 
 	// (I have split it up into two switch cases to declare variables below)
 	const { id, fields } = action;
-	switch ( action.type ) {
 
+	switch ( action.type ) {
 		case at.DELETE_CONTACT:
 			return deleteContact(newContacts, id);
 

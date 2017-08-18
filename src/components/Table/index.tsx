@@ -20,7 +20,6 @@ const caretUp = '\u25B2',
 
 
 const Table = ( {contacts, deleteContact, sort, sortBy }: P) => {
-	console.log('contacts',contacts);
 	return (
 		<Div> 
 			<table>

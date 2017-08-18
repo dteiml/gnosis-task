@@ -2,10 +2,6 @@ import * as at from '../constants/actionTypes'; // at = action types
 import Contact from '../constants/Contact';
 import { Fields } from '../constants/Contact';
 
-interface S {
-	contacts: Contact[];
-	sortBy: string;}
-
 const sort = (contacts: Contact[], sortBy: string, field: string) => {
 	if ( sortBy === field ) { // reverse 
 				return {contacts: contacts.reverse(),
@@ -20,19 +16,22 @@ const sort = (contacts: Contact[], sortBy: string, field: string) => {
 }
 
 const deleteContact = (contacts: Contact[], id: string) => {
-	return { contacts: contacts.filter((contact: Contact) => // pure function
+	return { contacts: contacts.filter((contact: Contact) =>
 											contact.id !== id)};
 }
 
 const updateContact = (contacts: Contact[], id: string, fields: Fields) => {
 	return { contacts: contacts.map((contact: Contact) => 
-										contact.id === id ? { id, fields } : contact)}; // pure function
+										contact.id === id ? { id, fields } : contact)}; 
 }
 
 const createContact = (contacts: Contact[], id: string, fields: Fields) => {
-	return { contacts: contacts.concat([ { id, fields } ])}; // pure function
+	return { contacts: contacts.concat([ { id, fields } ])}; 
 }
 
+interface S {
+	contacts: Contact[];
+	sortBy: string;}
 
 // data is composed of an array of contacts and a sortBy tag
 const data = (state: S = {contacts: [], sortBy: ''}, action: any) => {

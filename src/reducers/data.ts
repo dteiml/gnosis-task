@@ -13,53 +13,46 @@ const data = (state: S = {contacts: [], sortBy: ''}, action: any) => {
 	// following switch case deals with fetching and sorting
 	switch ( action.type ) {
 
-		case at.FETCH_DATA:
+		case at.FETCH_DATA: // fetch data
 			return { contacts: action.data || contacts };
 
-		case at.SORT:
+		case at.SORT: // sort
 			const { sortBy } = state,
 						{ field } = action,
 						newContacts = [...contacts]; // so we don't mutate state
 
-			if ( sortBy === field ) {
-				const ABC = newContacts.reverse();
-				return {contacts: [...ABC], // so we return a brand new array
+			if ( sortBy === field ) { // reverse 
+				return {contacts: newContacts.reverse(),
 								sortBy: ''}}
-			else {
+			else { // new sort
 				newContacts.sort( 
-				// wee musn't forget to create a new array at the end
 				( a: Contact, b: Contact ) => {
-					console.log(a.fields[field], b.fields[field]);
 				if ( a.fields[field] > b.fields[field] ) return 1; else return -1;});
-				return {contacts: newContacts, // creating new array
+
+				return {contacts: newContacts,
 								sortBy: field}}; 
-			}
+	}
 
-
-	const { id, fields } = action,
-
-				// myContact will either be undefined - if we're creating a new one
-				// or the contact - if we're updating or deleting
-				myContact = contacts.filter((contact: Contact) => contact.id === id)[0];
-
+	const { id, fields } = action;
 	let newContacts;
-
 	// the next switch case deals with mutating contacts 
 	// (I have split it up into two switch cases to declare variables as above)
 	switch ( action.type ) {
 		case at.DELETE_CONTACT:
 			newContacts = contacts.filter((contact: Contact) => // pure function
-											myContact !== contact);
+											contact.id !== id);
 			break;
 		case at.UPDATE_CONTACT:
 			newContacts = contacts.map((contact: Contact) => 
 											contact.id === id ? {id, fields} : contact); // pure function
 			break;
 		case at.CREATE_CONTACT: 
-			newContacts = contacts.concat([ {id, fields} ]); // returns new array
+			newContacts = contacts.concat([ {id, fields} ]); // pure function
 			break;
-		default: // we don't change anything, so this is not a mutation
-			return state;};
+		default: 
+			return state; // we don't change anything, so this is not a mutation
+	};
+
 	return { contacts: newContacts };};
 
 export default data;

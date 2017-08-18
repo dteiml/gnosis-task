@@ -1,11 +1,40 @@
 import * as at from '../constants/actionTypes'; // at = action types
 import Contact from '../constants/Contact';
+import { Fields } from '../constants/Contact';
 
 interface S {
 	contacts: Contact[];
 	sortBy: string;}
 
-// data is composed of an arraty of contacts and a sortBy tag
+const sort = (contacts: Contact[], sortBy: string, field: string) => {
+	if ( sortBy === field ) { // reverse 
+				return {contacts: contacts.reverse(),
+								sortBy: ''}}
+			else { // new sort
+				contacts.sort( 
+					( a: Contact, b: Contact ) => {
+						if ( a.fields[field] > b.fields[field] ) return 1; else return -1;});
+
+				return {contacts: contacts,
+								sortBy: field}}; 
+}
+
+const deleteContact = (contacts: Contact[], id: string) => {
+	return contacts = contacts.filter((contact: Contact) => // pure function
+											contact.id !== id);
+}
+
+const updateContact = (contacts: Contact[], id: string, fields: Fields) => {
+	return contacts.map((contact: Contact) => 
+											contact.id === id ? {id, fields} : contact); // pure function
+}
+
+const createContact = (contacts: Contact[], id: string, fields: Fields) => {
+	return { contacts: contacts.concat([ {id, fields} ])}; // pure function
+}
+
+
+// data is composed of an array of contacts and a sortBy tag
 const data = (state: S = {contacts: [], sortBy: ''}, action: any) => {
 	const { contacts } = state;
 
@@ -17,42 +46,32 @@ const data = (state: S = {contacts: [], sortBy: ''}, action: any) => {
 			return { contacts: action.data || contacts };
 
 		case at.SORT: // sort
+			// declare variables
 			const { sortBy } = state,
 						{ field } = action,
 						newContacts = [...contacts]; // so we don't mutate state
 
-			if ( sortBy === field ) { // reverse 
-				return {contacts: newContacts.reverse(),
-								sortBy: ''}}
-			else { // new sort
-				newContacts.sort( 
-				( a: Contact, b: Contact ) => {
-				if ( a.fields[field] > b.fields[field] ) return 1; else return -1;});
-
-				return {contacts: newContacts,
-								sortBy: field}}; 
+			return sort(newContacts, sortBy, field);
 	}
 
-	const { id, fields } = action;
-	let newContacts;
 	// the next switch case deals with mutating contacts 
-	// (I have split it up into two switch cases to declare variables as above)
+	// (I have split it up into two switch cases to declare variables below)
+	const { id, fields } = action;
+	let newContacts: Contact[] = [];
 	switch ( action.type ) {
+
 		case at.DELETE_CONTACT:
-			newContacts = contacts.filter((contact: Contact) => // pure function
-											contact.id !== id);
-			break;
+			return deleteContact(newContacts, id);
+
 		case at.UPDATE_CONTACT:
-			newContacts = contacts.map((contact: Contact) => 
-											contact.id === id ? {id, fields} : contact); // pure function
-			break;
+			return updateContact(newContacts, id, fields);
+
 		case at.CREATE_CONTACT: 
-			newContacts = contacts.concat([ {id, fields} ]); // pure function
-			break;
+			return createContact(newContacts, id, fields);
+
 		default: 
 			return state; // we don't change anything, so this is not a mutation
 	};
-
-	return { contacts: newContacts };};
+}
 
 export default data;

@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, compose, applyMiddleware } from 'redux';
 import rootReducer from './reducers';
 import * as thunk from 'redux-thunk'; 
 
@@ -11,4 +11,12 @@ const logger = (store: any) => (next: any) => (action: any) => {
 
 	return result;};
 
-export const createAppStore = () => createStore(rootReducer, applyMiddleware(thunk.default, logger));
+export const createAppStore = () => createStore(rootReducer, 
+	compose( 
+	applyMiddleware(thunk.default, logger),
+	    /**
+     * Conditionally add the Redux DevTools extension enhancer
+     * if it is installed.
+     */
+     // eslint-disable-next-line
+    (<any>window).devToolsExtension ? (<any>window).devToolsExtension() : (f: any) => f));

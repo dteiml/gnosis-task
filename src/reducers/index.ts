@@ -5,6 +5,7 @@ import status from './status';
 
 const rootReducer = combineReducers({
 	data,
-	status});
+	status
+});
 
 export default rootReducer;
